@@ -2119,6 +2119,12 @@ public class BoxJsTestGenerated extends AbstractBoxJsTest {
         }
 
         @Test
+        @TestMetadata("excludeMembersFromExport.kt")
+        public void testExcludeMembersFromExport() throws Exception {
+            runTest("js/js.translator/testData/box/export/excludeMembersFromExport.kt");
+        }
+
+        @Test
         @TestMetadata("exportAllFile.kt")
         public void testExportAllFile() throws Exception {
             runTest("js/js.translator/testData/box/export/exportAllFile.kt");
