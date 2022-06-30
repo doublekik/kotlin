@@ -113,7 +113,7 @@ class JsClassGenerator(private val irClass: IrClass, val context: JsGenerationCo
                 if (property.getter?.extensionReceiverParameter != null || property.setter?.extensionReceiverParameter != null)
                     continue
 
-                if (!property.visibility.isPublicAPI || property.isSimpleProperty)
+                if (!property.visibility.isPublicAPI || property.isSimpleProperty || property.isJsNotExport())
                     continue
 
                 if (
@@ -158,7 +158,7 @@ class JsClassGenerator(private val irClass: IrClass, val context: JsGenerationCo
                 val needsOverride = (overriddenExportedGetter && noOverriddenExportedSetter) ||
                         property.isAllowedFakeOverriddenDeclaration(context.staticContext.backendContext)
 
-                if (property.isExported(context.staticContext.backendContext) &&
+                if (irClass.isExported(context.staticContext.backendContext) &&
                     (overriddenSymbols.isEmpty() || needsOverride) ||
                     hasOverriddenExportedInterfaceProperties ||
                     getterOverridesExternal ||
