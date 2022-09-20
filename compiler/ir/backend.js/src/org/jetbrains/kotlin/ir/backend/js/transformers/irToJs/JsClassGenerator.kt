@@ -214,6 +214,10 @@ class JsClassGenerator(private val irClass: IrClass, val context: JsGenerationCo
 
         context.staticContext.classModels[irClass.symbol] = classModel
 
+        if (irClass.hasAnnotation(JsAnnotations.MetaClass)) {
+            context.staticContext.metaClasses.add(irClass.symbol)
+        }
+
         return classBlock
     }
 
@@ -321,7 +325,7 @@ class JsClassGenerator(private val irClass: IrClass, val context: JsGenerationCo
         val setMetadataFor = context.staticContext.backendContext.intrinsics.setMetadataForSymbol.owner
 
         val ctor = classNameRef
-        val parent = baseClassRef
+        val parent = baseClassRef?.takeIf { !es6mode }
         val name = generateSimpleName()
         val interfaces = generateInterfacesList()
         val metadataConstructor = getMetadataConstructor()
@@ -385,7 +389,7 @@ class JsClassGenerator(private val irClass: IrClass, val context: JsGenerationCo
             .distinct()
             .map { JsIntLiteral(it) }
 
-        return JsArrayLiteral(arity)
+        return JsArrayLiteral(arity).takeIf { arity.isNotEmpty() }
     }
 
     private fun generateAssociatedObjectKey(): JsIntLiteral? {
