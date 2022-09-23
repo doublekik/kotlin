@@ -17,5 +17,5 @@ KtConstructorSymbol:
     KtValueParameterSymbol(c)
   ]
   visibility: Public
-  getContainingModule: KtSourceModule "Sources of main"
+  getContainingModule: KtSdkModule "SDK jdk"
   deprecationStatus: null

@@ -85,7 +85,7 @@ KtFunctionSymbol:
   ]
   visibility: Public
   getDispatchReceiver(): test/E
-  getContainingModule: KtSourceModule "Sources of main"
+  getContainingModule: KtBinaryModule "Builtins for JVM (1.8)"
   deprecationStatus: null
 
 KtFunctionSymbol:
