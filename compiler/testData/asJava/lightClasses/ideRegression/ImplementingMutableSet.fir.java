@@ -5,9 +5,9 @@ public final class SmartSet /* SmartSet*/<T>  extends kotlin.collections.Abstrac
   @org.jetbrains.annotations.Nullable()
   private java.lang.Object data = null /* initializer type: null */;
 
-  private int size = 0 /* initializer type: int */;
+  private int size = 0 /* initializer type: int */ /* constant value 0 */;
 
-  private static final int ARRAY_THRESHOLD = 5 /* initializer type: int */;
+  private static final int ARRAY_THRESHOLD = 5 /* initializer type: int */ /* constant value 5 */;
 
   @java.lang.Override()
   @org.jetbrains.annotations.NotNull()

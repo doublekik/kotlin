@@ -89,7 +89,7 @@ public abstract @interface Ann /* Ann*/ {
 public final class F /* F*/ implements java.lang.Runnable {
   @Anno(p = "p")
   @org.jetbrains.annotations.NotNull()
-  private java.lang.String prop = "x" /* initializer type: java.lang.String */;
+  private java.lang.String prop = "x" /* initializer type: java.lang.String */ /* constant value x */;
 
   @Anno(p = "f")
   public final void f(@Anno() @org.jetbrains.annotations.NotNull() java.lang.String);//  f(java.lang.String)

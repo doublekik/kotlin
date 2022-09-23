@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.light.classes.symbol.fields
 import com.intellij.psi.*
 import org.jetbrains.kotlin.analysis.api.KtAnalysisSession
 import org.jetbrains.kotlin.analysis.api.KtConstantInitializerValue
-import org.jetbrains.kotlin.analysis.api.base.KtConstantValue
 import org.jetbrains.kotlin.analysis.api.lifetime.isValid
 import org.jetbrains.kotlin.analysis.api.symbols.KtKotlinPropertySymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KtPropertySymbol
@@ -115,13 +114,18 @@ internal class SymbolLightFieldForProperty(
 
     override fun getModifierList(): PsiModifierList = _modifierList
 
-    private val _initializer by lazyPub {
+    private val _initializerValue by lazyPub {
         if (propertySymbol !is KtKotlinPropertySymbol) return@lazyPub null
-        val constInitializer = propertySymbol.initializer as? KtConstantInitializerValue ?: return@lazyPub null
-        (constInitializer.constant as? KtConstantValue)?.createPsiLiteral(this)
+        (propertySymbol.initializer as? KtConstantInitializerValue)?.constant
+    }
+
+    private val _initializer by lazyPub {
+        _initializerValue?.createPsiLiteral(this)
     }
 
     override fun getInitializer(): PsiExpression? = _initializer
+
+    override fun computeConstantValue(): Any? = _initializerValue?.value
 
     override fun equals(other: Any?): Boolean =
         this === other ||

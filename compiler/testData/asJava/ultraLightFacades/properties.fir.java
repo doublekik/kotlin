@@ -6,7 +6,7 @@ public final class PropertiesKt /* PropertiesKt*/ {
   private static final java.lang.Object arrayConst;
 
   @org.jetbrains.annotations.NotNull()
-  private static final java.lang.String x = "" /* initializer type: java.lang.String */;
+  private static final java.lang.String x = "" /* initializer type: java.lang.String */ /* constant value  */;
 
   @org.jetbrains.annotations.NotNull()
   private static final kotlin.Lazy<java.lang.String> lazyProp$delegate;
@@ -15,16 +15,16 @@ public final class PropertiesKt /* PropertiesKt*/ {
   private static final kotlin.jvm.functions.Function1<java.lang.Integer, java.lang.Integer> sum;
 
   @org.jetbrains.annotations.NotNull()
-  private static java.lang.String name = "x" /* initializer type: java.lang.String */;
+  private static java.lang.String name = "x" /* initializer type: java.lang.String */ /* constant value x */;
 
   @org.jetbrains.annotations.NotNull()
-  private static java.lang.String protectedWithPrivateSet = "" /* initializer type: java.lang.String */;
+  private static java.lang.String protectedWithPrivateSet = "" /* initializer type: java.lang.String */ /* constant value  */;
 
   @org.jetbrains.annotations.NotNull()
-  private static java.lang.String x$1 = "" /* initializer type: java.lang.String */;
+  private static java.lang.String x$1 = "" /* initializer type: java.lang.String */ /* constant value  */;
 
   @org.jetbrains.annotations.NotNull()
-  public static final java.lang.String SUBSYSTEM_DEPRECATED = "This subsystem is deprecated" /* initializer type: java.lang.String */;
+  public static final java.lang.String SUBSYSTEM_DEPRECATED = "This subsystem is deprecated" /* initializer type: java.lang.String */ /* constant value This subsystem is deprecated */;
 
   @org.jetbrains.annotations.Nullable()
   private static java.lang.Boolean isEmptyMutable;
@@ -43,25 +43,25 @@ public final class PropertiesKt /* PropertiesKt*/ {
 
   private static final error.NonExistentClass delegatedProp2$delegate;
 
-  private static final error.NonExistentClass intConst = 30 /* initializer type: int */;
+  private static final error.NonExistentClass intConst = 30 /* initializer type: int */ /* constant value 30 */;
 
-  private static final int f1 = 2 /* initializer type: int */;
+  private static final int f1 = 2 /* initializer type: int */ /* constant value 2 */;
 
-  private static final int plainField = 1 /* initializer type: int */;
+  private static final int plainField = 1 /* initializer type: int */ /* constant value 1 */;
 
-  private static final int privateVal = 42 /* initializer type: int */;
+  private static final int privateVal = 42 /* initializer type: int */ /* constant value 42 */;
 
-  private static final int privateVar = 42 /* initializer type: int */;
+  private static final int privateVar = 42 /* initializer type: int */ /* constant value 42 */;
 
-  private static int counter = 0 /* initializer type: int */;
+  private static int counter = 0 /* initializer type: int */ /* constant value 0 */;
 
-  private static int f2 = 3 /* initializer type: int */;
+  private static int f2 = 3 /* initializer type: int */ /* constant value 3 */;
 
   private static int int1;
 
   private static int int2;
 
-  private static int internalWithPrivateSet = 1 /* initializer type: int */;
+  private static int internalWithPrivateSet = 1 /* initializer type: int */ /* constant value 1 */;
 
   private static java.lang.String internalVarPrivateSet;
 

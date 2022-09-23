@@ -1,5 +1,5 @@
 public final class C /* p.C*/ {
-  private final int ip = 5 /* initializer type: int */;
+  private final int ip = 5 /* initializer type: int */ /* constant value 5 */;
 
   public  C();//  .ctor()
 

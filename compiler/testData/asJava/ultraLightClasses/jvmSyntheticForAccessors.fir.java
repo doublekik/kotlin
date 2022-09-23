@@ -1,7 +1,7 @@
 public final class X /* X*/ {
-  private int v = 1 /* initializer type: int */;
+  private int v = 1 /* initializer type: int */ /* constant value 1 */;
 
-  private int w = 1 /* initializer type: int */;
+  private int w = 1 /* initializer type: int */ /* constant value 1 */;
 
   @kotlin.jvm.JvmSynthetic()
   public final int getV();//  getV()
