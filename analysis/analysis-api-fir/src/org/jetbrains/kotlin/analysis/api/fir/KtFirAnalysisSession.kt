@@ -13,10 +13,12 @@ import org.jetbrains.kotlin.analysis.api.components.*
 import org.jetbrains.kotlin.analysis.api.fir.components.*
 import org.jetbrains.kotlin.analysis.api.fir.symbols.KtFirOverrideInfoProvider
 import org.jetbrains.kotlin.analysis.api.fir.symbols.KtFirSymbolProvider
+import org.jetbrains.kotlin.analysis.api.fir.types.KtFirType
 import org.jetbrains.kotlin.analysis.api.fir.utils.threadLocal
 import org.jetbrains.kotlin.analysis.api.impl.base.components.KtAnalysisScopeProviderImpl
 import org.jetbrains.kotlin.analysis.api.lifetime.KtLifetimeToken
 import org.jetbrains.kotlin.analysis.api.lifetime.withValidityAssertion
+import org.jetbrains.kotlin.analysis.api.types.KtType
 import org.jetbrains.kotlin.analysis.low.level.api.fir.api.LLFirResolveSession
 import org.jetbrains.kotlin.analysis.low.level.api.fir.api.LowLevelFirApiFacadeForResolveOnAir
 import org.jetbrains.kotlin.analysis.project.structure.KtModule
@@ -27,6 +29,8 @@ import org.jetbrains.kotlin.fir.moduleData
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
 import org.jetbrains.kotlin.fir.resolve.providers.FirSymbolProvider
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
+import org.jetbrains.kotlin.fir.types.arrayElementType
+import org.jetbrains.kotlin.fir.types.isArrayOrPrimitiveArray
 import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
@@ -145,6 +149,17 @@ private constructor(
     val useSiteScopeDeclarationProvider: KotlinDeclarationProvider = project.createDeclarationProvider(useSiteAnalisisScope)
 
     fun getScopeSessionFor(session: FirSession): ScopeSession = withValidityAssertion { firResolveSession.getScopeSessionFor(session) }
+
+    override fun KtType.isArrayOrPrimitiveArray(): Boolean {
+        val firType = this as? KtFirType ?: return false
+        return firType.coneType.isArrayOrPrimitiveArray
+    }
+
+    override fun KtType.isNestedArray(): Boolean {
+        if (!isArrayOrPrimitiveArray()) return false
+        val firType = this as? KtFirType ?: return false
+        return firType.coneType.arrayElementType()?.isArrayOrPrimitiveArray == true
+    }
 
     companion object {
         internal fun createAnalysisSessionByFirResolveSession(

@@ -100,6 +100,16 @@ public interface KtTypeInfoProviderMixIn : KtAnalysisSessionMixIn {
             }
         }
 
+    /**
+     * Returns whether the given KtType is an array or a primitive array type or not.
+     */
+    public fun KtType.isArrayOrPrimitiveArray(): Boolean = false
+
+    /**
+     * Returns whether the given KtType is an array or a primitive array type and its element is also an array type or not.
+     */
+    public fun KtType.isNestedArray(): Boolean = false
+
     public fun KtType.isClassTypeWithClassId(classId: ClassId): Boolean = withValidityAssertion {
         if (this !is KtNonErrorClassType) return false
         return this.classId == classId

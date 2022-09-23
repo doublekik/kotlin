@@ -9,13 +9,16 @@ import org.jetbrains.kotlin.analysis.api.KtAnalysisApiInternals
 import org.jetbrains.kotlin.analysis.api.KtAnalysisSession
 import org.jetbrains.kotlin.analysis.api.components.*
 import org.jetbrains.kotlin.analysis.api.descriptors.components.*
+import org.jetbrains.kotlin.analysis.api.descriptors.types.base.KtFe10Type
 import org.jetbrains.kotlin.analysis.api.impl.base.components.KtAnalysisScopeProviderImpl
 import org.jetbrains.kotlin.analysis.api.lifetime.KtLifetimeToken
 import org.jetbrains.kotlin.analysis.api.lifetime.withValidityAssertion
 import org.jetbrains.kotlin.analysis.api.symbols.KtSymbolProvider
 import org.jetbrains.kotlin.analysis.api.symbols.KtSymbolProviderByJavaPsi
+import org.jetbrains.kotlin.analysis.api.types.KtType
 import org.jetbrains.kotlin.analysis.project.structure.KtModule
 import org.jetbrains.kotlin.analysis.project.structure.getKtModule
+import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
 
@@ -63,6 +66,16 @@ class KtFe10AnalysisSession(
     override val scopeSubstitutionImpl: KtScopeSubstitution = KtFe10ScopeSubstitution(this)
     override val substitutorFactoryImpl: KtSubstitutorFactory = KtFe10SubstitutorFactory(this)
     override val symbolProviderByJavaPsiImpl: KtSymbolProviderByJavaPsi = KtFe10SymbolProviderByJavaPsi(this)
+
+    override fun KtType.isArrayOrPrimitiveArray(): Boolean =
+        (this as? KtFe10Type)?.type?.let { KotlinBuiltIns.isArrayOrPrimitiveArray(it) } == true
+
+    override fun KtType.isNestedArray(): Boolean {
+        if (!isArrayOrPrimitiveArray()) return false
+        val type = (this as? KtFe10Type)?.type ?: return false
+        val elementType = type.constructor.builtIns.getArrayElementType(type)
+        return KotlinBuiltIns.isArrayOrPrimitiveArray(elementType)
+    }
 
     override fun createContextDependentCopy(originalKtFile: KtFile, elementToReanalyze: KtElement): KtAnalysisSession =
         withValidityAssertion {
