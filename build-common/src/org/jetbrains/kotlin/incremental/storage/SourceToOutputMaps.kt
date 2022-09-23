@@ -21,17 +21,17 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
 import java.io.File
 
-internal class SourceToJvmNameMap(
+class SourceToJvmNameMap(
     storageFile: File,
     pathConverter: FileToPathConverter
 ) : AbstractSourceToOutputMap<JvmClassName>(JvmClassNameTransformer, storageFile, pathConverter)
 
-internal class SourceToFqNameMap(
+class SourceToFqNameMap(
     storageFile: File,
     pathConverter: FileToPathConverter
 ) : AbstractSourceToOutputMap<FqName>(FqNameTransformer, storageFile, pathConverter)
 
-internal abstract class AbstractSourceToOutputMap<Name>(
+abstract class AbstractSourceToOutputMap<Name>(
     private val nameTransformer: NameTransformer<Name>,
     storageFile: File,
     private val pathConverter: FileToPathConverter

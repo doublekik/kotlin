@@ -151,6 +151,8 @@ abstract class IncrementalCompilerRunner<
         providedChangedFiles as ChangedFiles.Known?
 
         val caches = createCacheManager(args, projectDir)
+        printSourceToClassesMapFilesHashSums(cacheDirectory, reporter, "before-build")
+        caches.validateSourceToClassesMap(reporter)
         val exitCode: ExitCode
         try {
             // Step 1: Get changed files
@@ -198,6 +200,7 @@ abstract class IncrementalCompilerRunner<
             // closing them after a normal use).
             try {
                 caches.close()
+                printSourceToClassesMapFilesHashSums(cacheDirectory, reporter, "after-build-exception")
             } catch (e2: Throwable) {
                 e.addSuppressed(e2)
             }
@@ -205,6 +208,7 @@ abstract class IncrementalCompilerRunner<
         }
         try {
             caches.close()
+            printSourceToClassesMapFilesHashSums(cacheDirectory, reporter, "after-build")
         } catch (e: Throwable) {
             return ICResult.Failed(IC_FAILED_TO_CLOSE_CACHES, e)
         }
@@ -230,6 +234,8 @@ abstract class IncrementalCompilerRunner<
             cleanOrCreateDirectories(outputDirsToClean)
         }
         return createCacheManager(args, projectDir).use { caches ->
+            printSourceToClassesMapFilesHashSums(cacheDirectory, reporter, "before-build non-incremental")
+            caches.validateSourceToClassesMap(reporter)
             if (trackChangedFiles) {
                 caches.inputsCache.sourceSnapshotMap.compareAndUpdate(allSourceFiles)
             }
@@ -238,6 +244,8 @@ abstract class IncrementalCompilerRunner<
             } else null
 
             compileImpl(CompilationMode.Rebuild(rebuildReason), allSourceFiles, args, caches, abiSnapshotData, messageCollector)
+        }.also {
+            printSourceToClassesMapFilesHashSums(cacheDirectory, reporter, "after-build non-incremental")
         }
     }
 

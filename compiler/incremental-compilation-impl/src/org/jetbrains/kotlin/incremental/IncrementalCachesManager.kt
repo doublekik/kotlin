@@ -17,12 +17,18 @@
 package org.jetbrains.kotlin.incremental
 
 import com.google.common.io.Closer
+import org.jetbrains.kotlin.build.report.BuildReporter
 import org.jetbrains.kotlin.build.report.ICReporter
+import org.jetbrains.kotlin.build.report.warn
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.incremental.storage.BasicMapsOwner
 import org.jetbrains.kotlin.incremental.storage.IncrementalFileToPathConverter
 import org.jetbrains.kotlin.serialization.SerializerExtensionProtocol
-import java.io.Closeable
-import java.io.File
+import java.io.*
+import java.security.MessageDigest
+import java.util.*
+
 
 abstract class IncrementalCachesManager<PlatformCache : AbstractIncrementalCache<*>>(
     cachesRootDir: File,
@@ -54,7 +60,6 @@ abstract class IncrementalCachesManager<PlatformCache : AbstractIncrementalCache
     @Synchronized
     override fun close() {
         check(!isClosed) { "This cache storage has already been closed" }
-
         val closer = Closer.create()
         caches.forEach {
             closer.register(CacheCloser(it))
@@ -62,6 +67,8 @@ abstract class IncrementalCachesManager<PlatformCache : AbstractIncrementalCache
         closer.close()
 
         isClosed = true
+
+        // add logging for sourceToClassesMap file
     }
 
     private class CacheCloser(private val cache: BasicMapsOwner) : Closeable {
@@ -73,6 +80,43 @@ abstract class IncrementalCachesManager<PlatformCache : AbstractIncrementalCache
         }
     }
 
+    fun validateSourceToClassesMap(reporter: BuildReporter) {
+        val valid = platformCache.sourceToClassesMap.storage.keys.any { platformCache.sourceToClassesMap.storage[it] != null }
+        val mapContents = buildString {
+            appendLine("===== sourceToClassesMap contents =====")
+            appendLine("Possibly valid: $valid")
+            platformCache.sourceToClassesMap.storage.keys.sorted().forEach {
+                appendLine("$it -> ${platformCache.sourceToClassesMap.storage[it]}")
+            }
+            appendLine("======================================")
+        }
+        reporter.warn { mapContents }
+    }
+}
+
+fun printSourceToClassesMapFilesHashSums(cacheDir: File, reporter: BuildReporter, tag: String) {
+    val result = buildString {
+        appendLine("===== sourceToClasses files hashes =====")
+        appendLine(tag)
+        cacheDir.walk().filter { "source-to-classes" in it.name }.forEach {
+            appendLine("${it.absolutePath} -> ${calculateReadableSha1(it)}")
+        }
+        appendLine("========================================")
+    }
+    reporter.warn { result }
+}
+
+private fun calculateReadableSha1(file: File): String {
+    val sha1 = MessageDigest.getInstance("SHA-1")
+    FileInputStream(file).use { input ->
+        val buffer = ByteArray(8192)
+        var len = input.read(buffer)
+        while (len != -1) {
+            sha1.update(buffer, 0, len)
+            len = input.read(buffer)
+        }
+        return Base64.getEncoder().encodeToString(sha1.digest());
+    }
 }
 
 class IncrementalJvmCachesManager(

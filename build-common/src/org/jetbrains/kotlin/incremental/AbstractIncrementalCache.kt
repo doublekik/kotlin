@@ -80,7 +80,7 @@ abstract class AbstractIncrementalCache<ClassName>(
     private val subtypesMap = registerMap(SubtypesMap(SUBTYPES.storageFile))
     private val supertypesMap = registerMap(SupertypesMap(SUPERTYPES.storageFile))
     protected val classFqNameToSourceMap = registerMap(ClassFqNameToSourceMap(CLASS_FQ_NAME_TO_SOURCE.storageFile, pathConverter))
-    internal abstract val sourceToClassesMap: AbstractSourceToOutputMap<ClassName>
+    abstract val sourceToClassesMap: AbstractSourceToOutputMap<ClassName>
     internal abstract val dirtyOutputClassesMap: AbstractDirtyClassesMap<ClassName>
     /**
      * A file X is a complementary to a file Y if they contain corresponding expect/actual declarations.

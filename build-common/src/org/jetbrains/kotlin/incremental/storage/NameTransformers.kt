@@ -19,7 +19,7 @@ package org.jetbrains.kotlin.incremental.storage
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
 
-internal interface NameTransformer<Name> {
+interface NameTransformer<Name> {
     fun asString(name: Name): String
     fun asName(string: String): Name
     fun asFqName(string: String): FqName
