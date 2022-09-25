@@ -19,6 +19,7 @@ package org.jetbrains.kotlin.daemon
 import org.jetbrains.kotlin.cli.common.CLICompiler
 import org.jetbrains.kotlin.cli.common.CompilerSystemProperties
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
+import org.jetbrains.kotlin.cli.common.environment.setPortableCachesMode
 import org.jetbrains.kotlin.cli.js.K2JSCompiler
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.cli.jvm.compiler.setupIdeaStandaloneExecution
@@ -113,6 +114,7 @@ abstract class KotlinCompileDaemonBase {
         log.info("daemon JVM args: " + jvmArguments.joinToString(" "))
         log.info("daemon args: " + args.joinToString(" "))
 
+        setPortableCachesMode()
         setIdeaIoUseFallback()
         setupIdeaStandaloneExecution()
 

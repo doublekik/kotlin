@@ -19,3 +19,7 @@ package org.jetbrains.kotlin.cli.common.environment
 fun setIdeaIoUseFallback() {
     System.setProperty("idea.io.use.nio2", java.lang.Boolean.TRUE.toString())
 }
+
+fun setPortableCachesMode() {
+    System.setProperty("org.jetbrains.jps.portable.caches", java.lang.Boolean.TRUE.toString())
+}
