@@ -1195,7 +1195,7 @@ private fun ObjCExportCodeGenerator.effectiveThrowsClasses(method: IrFunction, s
     }
 
     val throwsAnnotation = method.annotations.findAnnotation(KonanFqNames.throws)
-            ?: return if (method is IrSimpleFunction && context.mapping.functionWithContinuationsToSuspendFunctions[method] != null) {
+            ?: return if (method is IrSimpleFunction && method.origin == IrDeclarationOrigin.LOWERED_SUSPEND_FUNCTION) {
                 listOf(symbols.cancellationException.owner)
             } else {
                 // Note: frontend ensures that all topmost overridden methods have (equal) @Throws annotations.
