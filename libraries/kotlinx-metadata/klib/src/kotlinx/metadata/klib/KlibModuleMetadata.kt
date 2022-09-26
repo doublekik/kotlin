@@ -5,7 +5,6 @@
 
 package kotlinx.metadata.klib
 
-import kotlinx.metadata.DeprecatedVisitor
 import kotlinx.metadata.KmAnnotation
 import kotlinx.metadata.KmModuleFragment
 import kotlinx.metadata.impl.WriteContext
@@ -79,7 +78,6 @@ class KlibModuleMetadata(
          * Deserializes metadata from the given [library].
          * @param readStrategy specifies the way module fragments of a single package are modified (e.g. merged) after deserialization.
          */
-        @OptIn(DeprecatedVisitor::class)
         fun read(
             library: MetadataLibraryProvider,
             readStrategy: KlibModuleFragmentReadStrategy = KlibModuleFragmentReadStrategy.DEFAULT
@@ -103,7 +101,6 @@ class KlibModuleMetadata(
      * Writes metadata back to serialized representation.
      * @param writeStrategy specifies the way module fragments are modified (e.g. split) before serialization.
      */
-    @OptIn(DeprecatedVisitor::class)
     fun write(
         writeStrategy: KlibModuleFragmentWriteStrategy = KlibModuleFragmentWriteStrategy.DEFAULT
     ): SerializedKlibMetadata {

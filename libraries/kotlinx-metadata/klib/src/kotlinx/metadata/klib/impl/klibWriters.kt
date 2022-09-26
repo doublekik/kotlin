@@ -5,7 +5,6 @@
 
 package kotlinx.metadata.klib.impl
 
-import kotlinx.metadata.DeprecatedVisitor
 import kotlinx.metadata.impl.*
 import kotlinx.metadata.klib.KlibSourceFile
 import org.jetbrains.kotlin.library.metadata.KlibMetadataProtoBuf
@@ -26,7 +25,6 @@ class ReverseSourceFileIndexWriteExtension : WriteContextExtension {
     }
 }
 
-@DeprecatedVisitor
 class KlibModuleFragmentWriter(
     stringTable: ApproximatingStringTable,
     contextExtensions: List<WriteContextExtension> = emptyList()
