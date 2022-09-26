@@ -95,7 +95,7 @@ fun IrSimpleFunction.getOrCreateFunctionWithContinuationStub(context: CommonBack
 }
 
 private fun IrSimpleFunction.createSuspendFunctionStub(context: CommonBackendContext): IrSimpleFunction {
-    require(this.isSuspend)
+    require(this.isSuspend) { "$fqNameWhenAvailable should be a suspend function to create version with contunation" }
     return factory.buildFun {
         updateFrom(this@createSuspendFunctionStub)
         isSuspend = false

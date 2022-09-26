@@ -327,7 +327,9 @@ abstract class AbstractSuspendFunctionsLowering<C : CommonBackendContext>(val co
                 )
 
                 val suspendInvokeFunction =
-                    suspendFunctionClass!!.simpleFunctions().single { it.name == OperatorNameConventions.INVOKE }
+                    suspendFunctionClass!!.simpleFunctions().single { it.name == OperatorNameConventions.INVOKE }.let {
+                        context.mapping.functionWithContinuationsToSuspendFunctions[it] ?: it
+                    }
 
                 buildInvokeMethod(
                     functionInvokeFunction = suspendInvokeFunction,
