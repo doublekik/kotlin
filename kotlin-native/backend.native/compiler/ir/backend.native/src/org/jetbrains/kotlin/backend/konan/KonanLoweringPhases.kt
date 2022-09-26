@@ -158,7 +158,7 @@ internal val extractLocalClassesFromInlineBodies = makeKonanFileOpPhase(
 
                 override fun visitFunction(declaration: IrFunction) {
                     if (declaration.isInline)
-                        context.inlineFunctionsSupport.getNonLoweredInlineFunction(declaration, false)
+                        context.inlineFunctionsSupport.saveNonLoweredInlineFunction(declaration)
                     declaration.acceptChildrenVoid(this)
                 }
             })

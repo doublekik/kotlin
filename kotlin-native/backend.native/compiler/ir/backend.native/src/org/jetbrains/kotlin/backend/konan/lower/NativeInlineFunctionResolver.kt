@@ -21,6 +21,10 @@ import org.jetbrains.kotlin.ir.util.*
 internal class InlineFunctionsSupport(mapping: NativeMapping) {
     private val notLoweredInlineFunctions = mapping.notLoweredInlineFunctions
 
+    fun saveNonLoweredInlineFunction(function: IrFunction) {
+        getNonLoweredInlineFunction(function, copy = false)
+    }
+
     fun getNonLoweredInlineFunction(function: IrFunction, copy: Boolean): IrFunction {
         val notLoweredInlineFunction = notLoweredInlineFunctions.getOrPut(function.symbol) {
             function.deepCopyWithVariables().also { it.patchDeclarationParents(function.parent) }
