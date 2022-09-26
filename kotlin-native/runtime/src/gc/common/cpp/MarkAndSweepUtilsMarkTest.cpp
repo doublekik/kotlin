@@ -225,6 +225,24 @@ TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleCharArray) {
     EXPECT_MARKED(stats, array);
 }
 
+TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleObjectWithInvalidFields) {
+    Object object;
+    object->field1 = kInitializingSingleton;
+
+    auto stats = Mark({object});
+
+    EXPECT_MARKED(stats, object);
+}
+
+TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleObjectArrayWithInvalidFields) {
+    ObjectArray array;
+    array.elements()[0] = kInitializingSingleton;
+
+    auto stats = Mark({array});
+
+    EXPECT_MARKED(stats, array);
+}
+
 TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleCharArrayWithSomeData) {
     CharArray array;
     array.elements()[0] = 'a';
@@ -288,6 +306,30 @@ TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleObjectArrayWithWeakCounter) {
 TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleCharArrayWithWeakCounter) {
     Object weakCounter;
     CharArray array;
+    weakCounter->field1 = array.header();
+    array.InstallWeakCounter(weakCounter);
+
+    auto stats = Mark({array});
+
+    EXPECT_MARKED(stats, array, weakCounter);
+}
+
+TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleObjectWithInvalidFieldsWithWeakCounter) {
+    Object weakCounter;
+    Object object;
+    object->field1 = kInitializingSingleton;
+    weakCounter->field1 = object.header();
+    object.InstallWeakCounter(weakCounter);
+
+    auto stats = Mark({object});
+
+    EXPECT_MARKED(stats, object, weakCounter);
+}
+
+TEST_F(MarkAndSweepUtilsMarkTest, MarkSingleObjectArrayWithInvalidFieldsWithWeakCounter) {
+    Object weakCounter;
+    ObjectArray array;
+    array.elements()[0] = kInitializingSingleton;
     weakCounter->field1 = array.header();
     array.InstallWeakCounter(weakCounter);
 
