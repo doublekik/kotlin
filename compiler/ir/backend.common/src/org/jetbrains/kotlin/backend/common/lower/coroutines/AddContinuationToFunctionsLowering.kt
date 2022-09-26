@@ -105,9 +105,9 @@ private fun IrSimpleFunction.createSuspendFunctionStub(context: CommonBackendCon
     }.also { function ->
         function.parent = parent
 
-        function.annotations += annotations
         function.metadata = metadata
 
+        function.copyAnnotationsFrom(this)
         function.copyAttributes(this)
         function.copyTypeParametersFrom(this)
         val substitutionMap = makeTypeParameterSubstitutionMap(this, function)
